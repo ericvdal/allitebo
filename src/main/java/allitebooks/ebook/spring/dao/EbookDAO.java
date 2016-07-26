@@ -1,8 +1,8 @@
-package allitebooks.ebook.spring.hibernate.dao;
+package allitebooks.ebook.spring.dao;
 
 import java.util.List;
 
-import allitebooks.ebook.spring.hibernate.model.EbookDetail;
+import allitebooks.ebooks.spring.model.EbookDetail;
 
 public interface EbookDAO {
 

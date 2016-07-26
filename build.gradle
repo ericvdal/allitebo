@@ -18,13 +18,18 @@ dependencies {
 	compile("org.springframework:spring-orm:"+springVersion)
 	
 	
-	compile("org.hibernate:hibernate-entitymanager:5.2.1.Final")
+	//compile("org.hibernate:hibernate-entitymanager:5.2.1.Final")
 
+
+ compile 'org.springframework.data:spring-data-mongodb:1.9.2.RELEASE'
 
 	compile("com.h2database:h2:1.4.192")
-	compile("org.xerial:sqlite-jdbc:3.8.11.2")
-//	compile("net.kemitix:sqlite-dialect:0.1.0")
-	compile 'com.github.gwenn:sqlite-dialect:master'
+	
+//	compile("org.hibernate.ogm:hibernate-ogm-mongodb:5.0.1.Final")
+	
+//	compile("org.xerial:sqlite-jdbc:3.8.11.2")
+// //	compile("net.kemitix:sqlite-dialect:0.1.0")
+//	compile 'com.github.gwenn:sqlite-dialect:master'
 	
 	compile("org.apache.logging.log4j:log4j-core:2.6.2")
 

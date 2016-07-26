@@ -1,23 +1,25 @@
-package allitebooks.ebook.spring.hibernate.model;
+package allitebooks.ebooks.spring.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import org.hibernate.annotations.DynamicUpdate;
-
-@DynamicUpdate
-@Table(name = "AUTHOR")
+@Document(collection = "author")
 public class Author {
 
+	@SuppressWarnings("unused")
+	private Author(){
+		
+	}
+	
+	public Author(String name) { 
+		this.name = name;
+	}
+	
 	 @Id
-	 @Column(name = "AUTHOR_ID")
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private int id;
-	 
-	 @Column(name = "NAME")
+	 	 
 	 private String name;
+
+
 	
 }

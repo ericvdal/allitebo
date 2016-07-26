@@ -1,46 +1,177 @@
-package allitebooks.ebook.spring.hibernate.model;
+package allitebooks.ebooks.spring.model;
 
-import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
-@DynamicUpdate
-@Table(name = "EBOOK_DETAIL")
+@Document(collection = "ebook_detail")
 public class EbookDetail {
 
-	 @Id
-	 @Column(name = "ID")
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+	@Id
 	 private int id;
 	 
-	 @Column(name = "TITLE")
 	 private String title;
 	 
-	 @Column(name = "URL_THUMBNAIL")
 	 private String urlThumbnail;
-	 /*
-	 @ManyToOne
-	 @JoinColumn(name="AUTHOR_ID")
-	 private Author author;
-	 */
-	 @Column(name = "ISBN")
-	 private Long isbn;
 
-	 @Column(name = "YEAR")
-	 private Integer year;
+	 private long isbn;
 
-	 @Column(name = "PAGES")
-	 private Integer pages;
+	 private int year;
+
+	 private int pages;
 	 
-	 @Column(name = "FILE_SIZE")
-	 private long fileSize;
+	 private String fileSize;
 	 
-	 @Column(name = "FILE_FORMAT")
-	 private long fileFormat;
+	 private String fileFormat;
+	 
+	 private String urlDownload;
+	 
+	 private String language;
+	 
+	 private EbookDetail(Builder builder) {
+		this.title = builder.title;
+		this.fileFormat = builder.fileFormat;
+		this.fileSize = builder.fileSize;
+		this.isbn = builder.isbn;
+		this.pages = builder.pages;
+		this.urlDownload = builder.urlDownload;
+		this.urlThumbnail = builder.urlThumbnail;
+		this.year = builder.year;
+		this.language = builder.language;
+	 }
+	 
+		public int getId() {
+			return id;
+		}
+
+
+		public String getTitle() {
+			return title;
+		}
+
+
+		public String getUrlThumbnail() {
+			return urlThumbnail;
+		}
+
+
+		public long getIsbn() {
+			return isbn;
+		}
+
+
+		public int getYear() {
+			return year;
+		}
+
+
+		public int getPages() {
+			return pages;
+		}
+
+
+		public String getFileSize() {
+			return fileSize;
+		}
+
+
+		public String getFileFormat() {
+			return fileFormat;
+		}
+
+
+		public String getUrlDownload() {
+			return urlDownload;
+		}	 
+	 
+		public String getLanguage() { 
+			return language;
+		}
+	 
+	 public static class Builder {
+
+		 private String title;
+		 
+		 private String urlThumbnail;
+
+		 private long isbn;
+
+		 private int year;
+
+		 private int pages;
+		 
+		 private String fileSize;
+		 
+		 private String fileFormat;
+		 
+		 private String urlDownload;
+		 
+		 private String language;
+		 
+		 public Builder() {
+			 
+		 }
+		 
+		 public Builder setTitle(String title){
+			 this.title = title;
+			 return this;
+		 }
+		 
+		 public Builder setUrlThumbnail(String urlThumbnail){
+			 this.urlThumbnail = urlThumbnail;
+			 return this;
+		 }
+		 
+		 public Builder setIsbn(long isbn){
+			 this.isbn = isbn;
+			 return this;
+		 }
+		 
+		 public Builder setYear(int year){
+			 this.year = year;
+			 return this;
+		 }
+		 
+		 public Builder setPages(int pages){
+			 this.pages = pages;
+			 return this;
+		 }
+		 
+		 public Builder setFileSize(String fileSize){
+			 this.fileSize = fileSize;
+			 return this;
+		 }
+		 
+		 public Builder setFileFormat(String fileFormat){
+			 this.fileFormat = fileFormat;
+			 return this;
+		 }
+		 
+		 public Builder setUrlDownload(String urlDownload){
+			 this.urlDownload = urlDownload;
+			 return this;
+		 }
+		 
+		 public Builder setLanguage(String language){
+			 this.language = language;
+			 return this;
+		 }
+		 
+		 public EbookDetail build(){
+			 return new EbookDetail(this);
+		 }
+		 
+	 }
+
+	@Override
+	public String toString() {
+		return "EbookDetail [id=" + id + ", title=" + title + ", urlThumbnail=" + urlThumbnail + ", isbn=" + isbn
+				+ ", year=" + year + ", pages=" + pages + ", fileSize=" + fileSize + ", fileFormat=" + fileFormat
+				+ ", urlDownload=" + urlDownload + ", language=" + language + "]";
+	}
+
+
+
+	 
 }
