@@ -1,23 +1,37 @@
 package allitebooks.ebook.parse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import allitebooks.ebook.spring.service.EbookService;
+import allitebooks.ebooks.spring.model.Author;
+import allitebooks.ebooks.spring.model.Category;
 import allitebooks.ebooks.spring.model.EbookDetail;
 
 public class Parser {
 
+
+    private static String springConfig = "app-context.xml";
+	
+	
+	private EbookService ebookService; 
+	
 	private static int nbPage = 0;
 	
 	public static void main(String[] args) {
-
+		
 		Parser parser = new Parser();
 		
 		parser.getTotalPage();
@@ -30,6 +44,12 @@ public class Parser {
 	}
 
 	private Elements loadPage(int page){
+		
+
+		ApplicationContext ctx = new ClassPathXmlApplicationContext(springConfig);
+		
+		ebookService = (EbookService) ctx.getBean("ebookService");
+		
 		Elements elements = null;
 		
 		
@@ -70,6 +90,8 @@ public class Parser {
 				Elements bookDetailElements = detailElements.first().getElementsByClass("book-detail");
 				
 				
+				String description = detailElements.first().getElementsByClass("entry-content").first().children().text().replaceAll("Book Description: ", "");
+				
 				Element bookDetailElement  = bookDetailElements.first();
 				
 				Elements details = bookDetailElement.children().first().children();
@@ -84,36 +106,61 @@ public class Parser {
 				while (detailsIterator.hasNext()){
 					Element el = detailsIterator.next();
 					if (lastKey.isEmpty()){
-						lastKey = el.text().replaceAll(":", "").toLowerCase().trim();
+						lastKey = el.text().replaceAll(":", "").toLowerCase().replace(" ", "");
 						lastValue = null;
 					} else {
-						if ("Author".equals(lastKey)){
-							lastValue = el.children().first();
-							detailList.put(lastKey, lastValue);
-						} else {
+						switch (lastKey) {
+						case "author":
+							List<Author> authorList = new ArrayList<Author>();
+							Elements authElements = el.children();
+							Iterator<Element> itAuthor = authElements.iterator();
+							while (itAuthor.hasNext()){
+								String a = itAuthor.next().text();
+								authorList.add(new Author(a));
+							}
+							detailList.put(lastKey, authorList);
+							break;
+						case "category":
+							List<Category> catList = new ArrayList<Category>();
+							Elements catElements = el.children();
+							Iterator<Element> itCat = catElements.iterator();
+							while (itCat.hasNext()){
+								String c = itCat.next().text();
+								catList.add(new Category(c));
+							}
+							detailList.put(lastKey, catList);
+
+							break;
+						default:
 							lastValue = el.text();
 							System.out.println(lastKey + ": "+ lastValue );
 							detailList.put(lastKey, lastValue);
+							break;
 						}
 						lastKey = "";
 					}
-					
 				}
 				
 				
 				EbookDetail ebookDetail = new EbookDetail.Builder()
-											.setTitle( (String) detailList.get("title"))
+											.setTitle( title)
 											.setIsbn(Long.parseLong((String) detailList.get("isbn")))
 											.setPages(Integer.parseInt((String) detailList.get("pages")))
 											.setUrlThumbnail(thumbnailSource)
 											.setUrlDownload(link)
+											.setLocalCopy(null)
 											.setFileSize((String) detailList.get("filesize"))
 											.setFileFormat((String) detailList.get("fileformat"))
 											.setLanguage((String) detailList.get("language"))
-											
+											.setDescription(description)
+											.setAuthors((List<Author>) detailList.get("author"))
+											.setCategories((List<Category>) detailList.get("category"))
 											.build();
 			
 				System.out.println(ebookDetail);
+				
+				save(ebookDetail);
+				
 			}
 			
 			
@@ -128,6 +175,10 @@ public class Parser {
 		return elements;
 	}
 	
+	private void save(EbookDetail ebookDetail) {
+		ebookService.insertEbookDetail(ebookDetail);
+	}
+
 	private void getTotalPage(){
 
 		try {

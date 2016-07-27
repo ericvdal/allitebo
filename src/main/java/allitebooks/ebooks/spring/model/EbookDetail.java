@@ -1,5 +1,7 @@
 package allitebooks.ebooks.spring.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,7 +29,16 @@ public class EbookDetail {
 	 
 	 private String urlDownload;
 	 
+	 private String localCopy;
+	 
 	 private String language;
+	 
+	 private String description;
+	 
+	 private List<Author> authors;
+	 
+	 private List<Category> categories;
+	 
 	 
 	 private EbookDetail(Builder builder) {
 		this.title = builder.title;
@@ -39,6 +50,10 @@ public class EbookDetail {
 		this.urlThumbnail = builder.urlThumbnail;
 		this.year = builder.year;
 		this.language = builder.language;
+		this.description = builder.description;
+		this.authors = builder.authors;
+		this.categories = builder.categories;
+		this.localCopy = builder.localCopy;
 	 }
 	 
 		public int getId() {
@@ -85,10 +100,26 @@ public class EbookDetail {
 			return urlDownload;
 		}	 
 	 
+		public String getLocalCopy(){
+			return localCopy;
+		}
+		
 		public String getLanguage() { 
 			return language;
 		}
 	 
+		public String getDesription() { 
+			return description;
+		}
+		
+		public List<Author> getAuthors(){
+			return authors;
+		}
+
+		public List<Category> getCategories() {
+			return categories;
+		}
+		
 	 public static class Builder {
 
 		 private String title;
@@ -107,7 +138,15 @@ public class EbookDetail {
 		 
 		 private String urlDownload;
 		 
+		 private String localCopy;
+		 
 		 private String language;
+		 
+		 private String description;
+		 
+		 private List<Author> authors;
+		 
+		 private List<Category> categories;
 		 
 		 public Builder() {
 			 
@@ -153,8 +192,28 @@ public class EbookDetail {
 			 return this;
 		 }
 		 
+		 public Builder setLocalCopy(String localCopy){
+			 this.localCopy = localCopy;
+			 return this;
+		 }
+		 
 		 public Builder setLanguage(String language){
 			 this.language = language;
+			 return this;
+		 }
+		 
+		 public Builder setDescription(String description){
+			 this.description = description;
+			 return this;
+		 }
+
+		 public Builder setAuthors(List<Author> authors){
+			 this.authors = authors;
+			 return this;
+		 }
+
+		 public Builder setCategories(List<Category> categories){
+			 this.categories = categories;
 			 return this;
 		 }
 		 

@@ -9,7 +9,7 @@ import allitebooks.ebook.spring.dao.EbookDAO;
 import allitebooks.ebook.spring.dao.EbookRepository;
 import allitebooks.ebooks.spring.model.EbookDetail;
 
-@Service
+@Service(value="ebookService")
 public class EbookServiceImpl implements EbookService {
 
 	@Autowired
@@ -26,8 +26,10 @@ public class EbookServiceImpl implements EbookService {
 
 	@Override
 	public void insertEbookDetail(EbookDetail ebookDetail) {
-		ebookDao.insertEbookDetail(ebookDetail);
-
+		EbookDetail ebook = repository.findByTitle(ebookDetail.getTitle());
+		if (ebook == null){
+			repository.save(ebookDetail);
+		}
 	}
 
 }

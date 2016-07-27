@@ -19,6 +19,7 @@
  <context:component-scan base-package="allitebooks.ebook.spring" />
  
  
+ 
  <mongo:mongo host="localhost" port="27017"/>
  
  
@@ -29,7 +30,7 @@
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
 	</bean> 
  
-	<mongo:repositories base-package="allitebooks.ebooks.spring.model" mongo-template-ref="mongoTemplate"  />
+	<mongo:repositories base-package="allitebooks.ebook.spring.dao" mongo-template-ref="mongoTemplate"  />
  
  
 
