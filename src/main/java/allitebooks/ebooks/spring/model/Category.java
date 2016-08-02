@@ -6,9 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "category")
 public class Category {
 
+	 
 	 @Id
-	 private int id;
-	 	 
 	 private String name;
 
 	 @SuppressWarnings("unused")
@@ -20,17 +19,13 @@ public class Category {
 		 this.name = name;
 	 }
 
-	public int getId() {
-		return id;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + "]";
+		return "Category [name=" + name + "]";
 	}
 	 
 }

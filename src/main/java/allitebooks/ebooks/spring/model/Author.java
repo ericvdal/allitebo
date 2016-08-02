@@ -7,8 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Author {
 	
 	 @Id
-	 private int id;
-	 	 
 	 private String name;
 
 
@@ -21,11 +19,6 @@ public class Author {
 		this.name = name;
 	}
 	
-
-	public int getId() {
-		return id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -33,7 +26,7 @@ public class Author {
 
 	@Override
 	public String toString() {
-		return "Author [id=" + id + ", name=" + name + "]";
+		return "Author [name=" + name + "]";
 	}
 	
 }

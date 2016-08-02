@@ -10,16 +10,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class EbookDetail {
 
 
+	 public EbookDetail() {
+		
+	}
+
 	@Id
-	 private int id;
+	 private String isbn;
 	 
 	 private String title;
 	 
 	 private String urlThumbnail;
 
-	 private long isbn;
-
-	 private int year;
+	 private String year;
 
 	 private int pages;
 	 
@@ -56,10 +58,6 @@ public class EbookDetail {
 		this.localCopy = builder.localCopy;
 	 }
 	 
-		public int getId() {
-			return id;
-		}
-
 
 		public String getTitle() {
 			return title;
@@ -71,12 +69,12 @@ public class EbookDetail {
 		}
 
 
-		public long getIsbn() {
+		public String getIsbn() {
 			return isbn;
 		}
 
 
-		public int getYear() {
+		public String getYear() {
 			return year;
 		}
 
@@ -126,9 +124,9 @@ public class EbookDetail {
 		 
 		 private String urlThumbnail;
 
-		 private long isbn;
+		 private String isbn;
 
-		 private int year;
+		 private String year;
 
 		 private int pages;
 		 
@@ -162,12 +160,12 @@ public class EbookDetail {
 			 return this;
 		 }
 		 
-		 public Builder setIsbn(long isbn){
+		 public Builder setIsbn(String isbn){
 			 this.isbn = isbn;
 			 return this;
 		 }
 		 
-		 public Builder setYear(int year){
+		 public Builder setYear(String year){
 			 this.year = year;
 			 return this;
 		 }
@@ -225,9 +223,74 @@ public class EbookDetail {
 
 	@Override
 	public String toString() {
-		return "EbookDetail [id=" + id + ", title=" + title + ", urlThumbnail=" + urlThumbnail + ", isbn=" + isbn
+		return "EbookDetail [ isbn=" + isbn + ", urlThumbnail=" + urlThumbnail + ", title=" + title
 				+ ", year=" + year + ", pages=" + pages + ", fileSize=" + fileSize + ", fileFormat=" + fileFormat
 				+ ", urlDownload=" + urlDownload + ", language=" + language + "]";
+	}
+
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+	public void setUrlThumbnail(String urlThumbnail) {
+		this.urlThumbnail = urlThumbnail;
+	}
+
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+
+	public void setPages(int pages) {
+		this.pages = pages;
+	}
+
+
+	public void setFileSize(String fileSize) {
+		this.fileSize = fileSize;
+	}
+
+
+	public void setFileFormat(String fileFormat) {
+		this.fileFormat = fileFormat;
+	}
+
+
+	public void setUrlDownload(String urlDownload) {
+		this.urlDownload = urlDownload;
+	}
+
+
+	public void setLocalCopy(String localCopy) {
+		this.localCopy = localCopy;
+	}
+
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public void setAuthors(List<Author> authors) {
+		this.authors = authors;
+	}
+
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
 
 
