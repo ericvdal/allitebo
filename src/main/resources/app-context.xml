@@ -12,7 +12,9 @@
 
  <tx:annotation-driven transaction-manager="transactionManager" />
 
+	
  <context:annotation-config/>
+ <context:property-placeholder location="classpath:ebook.properties" />
  
  <!-- Tell Spring where to scan for components -->
  <context:component-scan base-package="allitebooks.ebook.spring.dao" />

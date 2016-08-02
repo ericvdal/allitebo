@@ -15,4 +15,6 @@ public interface EbookService {
 	public boolean saveFile(EbookDetail ebookDetail);
 	
 	public byte[] loadPdfFile(String url);
+	
+	public String getFileLocation();
 }

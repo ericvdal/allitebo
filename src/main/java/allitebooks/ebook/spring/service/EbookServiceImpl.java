@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,9 @@ import allitebooks.ebooks.spring.model.EbookDetail;
 @Service(value="ebookService")
 public class EbookServiceImpl implements EbookService {
 
+	@Value("${ebook.location}")
+	public String fileLocation;
+	
 	@Autowired
 	private EbookDAO ebookDao;
 	
@@ -43,6 +47,7 @@ public class EbookServiceImpl implements EbookService {
 			repository.save(ebookDetail);
 		}
 	}
+	
 
 	@Override
 	public boolean isEbookTitleExists(String title) {
@@ -84,6 +89,11 @@ public class EbookServiceImpl implements EbookService {
 		ResponseEntity<byte[]> streamFile = restTemplate.exchange(url, HttpMethod.GET, requestEntity, byte[].class);
 
 		return streamFile.getBody();
+	}
+
+	@Override
+	public String getFileLocation() {
+		return fileLocation;
 	}
 
 }

@@ -1,5 +1,6 @@
 package allitebooks.ebook.parse;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,10 +15,13 @@ import org.jsoup.select.Elements;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.google.common.io.Files;
+
 import allitebooks.ebook.spring.service.EbookService;
 import allitebooks.ebooks.spring.model.Author;
 import allitebooks.ebooks.spring.model.Category;
 import allitebooks.ebooks.spring.model.EbookDetail;
+import java.time.LocalDateTime;
 
 public class Parser {
 
@@ -50,19 +54,52 @@ public class Parser {
 		
 		
 		
-		parser.savePdf();
+		try {
+			parser.savePdf();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 					
 	}
 
-	private  void savePdf() {
+	private  void savePdf() throws IOException {
 		// TODO Auto-generated method stub
 		
 		List<EbookDetail> ebookList = ebookService.getAllEbookDetail();
 		
 		for (EbookDetail ebookDetail:ebookList){
-			byte[] pdfByte = ebookService.loadPdfFile(ebookDetail.getUrlDownload());
+
+			File ebookFile = new File(ebookService.getFileLocation()+ebookDetail.getTitle().replace("/", "-").replace("?", "").replace(":", "")+".pdf");
+			
+			if (!ebookFile.exists() && ebookDetail.getTitle() != null ){
+				//	&& ebookDetail.getDownload() != null){
+				
+				LocalDateTime localDateTimeStart = LocalDateTime.now();
+				
+				byte[] streamFile = ebookService.loadPdfFile(ebookDetail.getUrlDownload());
+				Files.write(  streamFile,ebookFile);
+				
+			//	ebook.setDownloaded(true);
+			//	repository.save(ebook);
+				
+				LocalDateTime localDateTimeEnd = LocalDateTime.now();
+				
+
+			/*	Duration  duration  = Duration .between(localDateTimeStart, localDateTimeEnd);
+
+				long siz = streamFile.length;
+				long durSec = duration.getSeconds();
+				if (siz > 0){
+					System.out.println("we saved " + ebookFile.toString() + " size: " + siz + "bytes in " + duration.getSeconds() + "seconds @ " +  siz/durSec/1024 + "kb/s");
+				}	
+				*/
+			}
+			
+			
+			
 			
 		}
 		
