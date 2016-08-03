@@ -77,7 +77,7 @@ public class EbookServiceImpl implements EbookService {
 		ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
 
 		List<MediaType> supportedApplicationTypes = new ArrayList<MediaType>();
-		MediaType pdfApplication = new MediaType("application","octet-stream");
+		MediaType pdfApplication = new MediaType("application","pdf");
 		supportedApplicationTypes.add(pdfApplication);
 
 		byteArrayHttpMessageConverter.setSupportedMediaTypes(supportedApplicationTypes);
