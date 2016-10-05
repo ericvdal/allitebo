@@ -2,6 +2,7 @@ package allitebooks.ebook.parse;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,32 +13,37 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.common.io.Files;
 
+import allitebooks.ebook.ConfigProperties;
 import allitebooks.ebook.spring.service.EbookService;
 import allitebooks.ebooks.spring.model.Author;
 import allitebooks.ebooks.spring.model.Category;
 import allitebooks.ebooks.spring.model.EbookDetail;
-import java.time.LocalDateTime;
 
+@Service
 public class Parser {
 
-
-    private static String springConfig = "app-context.xml";
-	
-	
+	private ConfigProperties configProperties;
+	    
 	private EbookService ebookService; 
 	
-	private static int nbPage = 0;
+	public Parser(EbookService ebookService, ConfigProperties configProperties){
+		this.ebookService = ebookService;
+		this.configProperties = configProperties;
+	}
 	
+	
+	
+	/*
 	public static void main(String[] args) {
 		
 		Parser parser = new Parser();
 		
-		parser.getTotalPage();
+		Integer nbPage = parser.getTotalPage();
 		
 		int pageStart = 1;
 		
@@ -52,21 +58,15 @@ public class Parser {
 		
 		System.out.println(nbPage);
 		
-		
-		
 		try {
 			parser.savePdf();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-					
 	}
-
+*/
 	private  void savePdf() throws IOException {
-		// TODO Auto-generated method stub
 		
 		List<EbookDetail> ebookList = ebookService.getAllEbookDetail();
 		
@@ -98,27 +98,18 @@ public class Parser {
 				*/
 			}
 			
-			
-			
-			
 		}
-		
-		
 		
 	}
 
-	private Elements loadPage(int page){
+	protected List<EbookDetail> loadPage(int page){
 		
-		ApplicationContext ctx = new ClassPathXmlApplicationContext(springConfig);
+		String urlPage = configProperties.getUrlPage();
 		
-		ebookService = (EbookService) ctx.getBean("ebookService");
-		
-		Elements elements = null;
-		
-		
+		List<EbookDetail> ebookDetailsList = new ArrayList<EbookDetail>();
 		
 		try {
-			Document doc = Jsoup.connect("http://www.allitebooks.com/page/" + page).get();
+			Document doc = Jsoup.connect(urlPage + page).get();
 			
 			Elements articleElements = doc.getElementsByTag("article");
 			
@@ -145,9 +136,7 @@ public class Parser {
 					Elements entryThumbnailElements = article.getElementsByClass("entry-thumbnail");
 					
 					String thumbnailSource = entryThumbnailElements.first().children().first().children().first().attr("src");
-					
-					
-					
+			
 					Document docEbook = Jsoup.connect(detailUrl).get();
 					
 					Elements detailElements = docEbook.getElementsByClass(id);
@@ -155,7 +144,6 @@ public class Parser {
 					String  link = detailElements.first().getElementsByClass("download-links").first().children().first().attr("href");
 					
 					Elements bookDetailElements = detailElements.first().getElementsByClass("book-detail");
-					
 					
 					String description = detailElements.first().getElementsByClass("entry-content").first().children().text().replaceAll("Book Description: ", "");
 					
@@ -231,38 +219,28 @@ public class Parser {
 				
 					System.out.println(ebookDetail);
 					
+					ebookDetailsList.add(ebookDetail);
 					
-					
-					save(ebookDetail);
+				//	save(ebookDetail);
 				}
-				
-				
-				
-				
 			}
-			
-			
-			
-			
-			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return elements;
+		return ebookDetailsList;
 	}
 	
 	private void save(EbookDetail ebookDetail) {
 		ebookService.insertEbookDetail(ebookDetail);
 	}
 	
-	private boolean isTitleSaved(String title){
+	protected boolean isTitleSaved(String title){
 		return ebookService.isEbookTitleExists(title);
 	}
 
-	private void getTotalPage(){
+	protected Integer getTotalPage(){
 
+		Integer nbPage = 0;
 		try {
 			Document doc = Jsoup.connect("http://www.allitebooks.com/").get();
 			
@@ -272,10 +250,13 @@ public class Parser {
 			
 			nbPage = Integer.valueOf(element.text());
 			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		return nbPage;
 	}
 	
 }

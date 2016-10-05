@@ -72,7 +72,7 @@ public class EbookServiceImpl implements EbookService {
 	public byte[] loadPdfFile(String url) {
 		HttpHeaders newHeader = new HttpHeaders();
 		newHeader.add(HttpHeaders.REFERER, "http://it-ebooks.info");
-		HttpEntity requestEntity =new HttpEntity(newHeader);
+		HttpEntity requestEntity = new HttpEntity(newHeader);
 		
 		ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
 

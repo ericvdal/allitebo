@@ -10,4 +10,6 @@ public interface EbookDAO {
 	
 	public void insertEbookDetail(EbookDetail ebookDetail);
 	
+
+	
 }

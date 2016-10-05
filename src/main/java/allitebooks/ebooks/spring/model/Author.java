@@ -6,9 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "author")
 public class Author {
 	
-	 @Id
-	 private String name;
-
+	@Id
+	private String name;
 
 	@SuppressWarnings("unused")
 	private Author(){
@@ -23,7 +22,6 @@ public class Author {
 		return name;
 	}
 	
-
 	@Override
 	public String toString() {
 		return "Author [name=" + name + "]";

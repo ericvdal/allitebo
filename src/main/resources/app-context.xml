@@ -14,13 +14,23 @@
 
 	
  <context:annotation-config/>
+ <!-- 
  <context:property-placeholder location="classpath:ebook.properties" />
- 
- <!-- Tell Spring where to scan for components -->
- <context:component-scan base-package="allitebooks.ebook.spring.dao" />
- <context:component-scan base-package="allitebooks.ebook.spring" />
- 
+   -->
+ <bean id="yamlProperties" class="org.springframework.beans.factory.config.YamlPropertiesFactoryBean">
+    <property name="resources" value="classpath:ebook.yml"/>
+</bean>
 
+
+<context:property-placeholder properties-ref="yamlProperties"/>
+
+ <!-- Tell Spring where to scan for components -->
+ <context:component-scan base-package="allitebooks.ebook" />
+ <!-- 
+ <context:component-scan base-package="allitebooks.ebook.spring.dao" />
+ <context:component-scan base-package="allitebooks.ebook.spring.service" />
+ <context:component-scan base-package="allitebooks.ebook.spring" />
+ -->
  <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/> 
  
  <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"  />

@@ -13,7 +13,7 @@ public class SpringMain {
 	public static void main(String[] args){
 		ApplicationContext context = new ClassPathXmlApplicationContext("app-context.xml");
 		
-		EbookService ebookService = context.getBean("ebookServiceImpl", EbookService.class); 
+		EbookService ebookService = context.getBean("ebookService", EbookService.class); 
 		
 		List<EbookDetail> ebookDetailList = ebookService.getAllEbookDetail();
 		

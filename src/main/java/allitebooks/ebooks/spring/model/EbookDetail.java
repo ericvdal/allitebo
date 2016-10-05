@@ -9,8 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "ebook_detail")
 public class EbookDetail {
 
-
-	 public EbookDetail() {
+	public EbookDetail() {
 		
 	}
 
@@ -40,6 +39,7 @@ public class EbookDetail {
 	 private List<Author> authors;
 	 
 	 private List<Category> categories;
+	 
 	 
 	 
 	 private EbookDetail(Builder builder) {
