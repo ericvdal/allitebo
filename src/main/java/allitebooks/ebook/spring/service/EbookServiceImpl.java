@@ -24,10 +24,10 @@ public class EbookServiceImpl implements EbookService {
 
 	@Value("${ebook.location}")
 	public String fileLocation;
-	
+	/*
 	@Autowired
 	private EbookDAO ebookDao;
-	
+	*/
 	@Autowired
 	private EbookRepository repository;
 	
