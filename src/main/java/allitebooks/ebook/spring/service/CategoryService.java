@@ -10,7 +10,6 @@ public interface CategoryService {
 	
 	public void removeCategory(Category category);
 
-
 	public List<Category> getAllCategory();
 	
 }

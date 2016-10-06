@@ -29,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void removeCategory(Category category) {
 		repository.delete(category);
-		
 	}
 
 	

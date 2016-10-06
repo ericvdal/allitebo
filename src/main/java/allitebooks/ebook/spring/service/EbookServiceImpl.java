@@ -15,7 +15,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import allitebooks.ebook.spring.dao.EbookDAO;
 import allitebooks.ebook.spring.dao.EbookRepository;
 import allitebooks.ebooks.spring.model.EbookDetail;
 
