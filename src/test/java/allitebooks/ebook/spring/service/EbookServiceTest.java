@@ -23,7 +23,7 @@ public class EbookServiceTest {
 	}
 	
 	@Test
-	public void testInsert(){
+	public void testGetAll(){
 		List<EbookDetail> ebookList = service.getAll();
 		Assert.assertTrue(ebookList != null );
 	}

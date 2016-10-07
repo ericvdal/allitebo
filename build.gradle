@@ -28,6 +28,7 @@ dependencies {
 
 	compile("com.h2database:h2:1.4.192")
 	
+	compile("org.springframework.boot:spring-boot-starter-batch:" +springBoot)
 	compile ("org.springframework.boot:spring-boot:" +springBoot)
 	compile ("org.springframework.boot:spring-boot-starter:" +springBoot)
 	

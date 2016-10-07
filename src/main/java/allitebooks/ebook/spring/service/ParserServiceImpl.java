@@ -25,6 +25,7 @@ public class ParserServiceImpl implements ParserService{
     
 	private EbookService ebookService; 
 	
+	
 	public ParserServiceImpl(EbookService ebookService, ConfigProperties configProperties){
 		this.ebookService = ebookService;
 		this.configProperties = configProperties;
@@ -150,7 +151,6 @@ public class ParserServiceImpl implements ParserService{
 					
 					ebookDetailsList.add(ebookDetail);
 					
-				//	save(ebookDetail);
 				}
 			}
 		} catch (IOException e) {
@@ -159,6 +159,7 @@ public class ParserServiceImpl implements ParserService{
 		return ebookDetailsList;
 	}
 	
+
 	@Override
 	public Integer getTotalPage(){
 
