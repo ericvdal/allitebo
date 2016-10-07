@@ -26,11 +26,11 @@ public class TestCategoryService {
 	
 	@Test
 	public void testInsert(){
-		service.insertCategory(fakeCategory);
-		List<Category> categoriesList = service.getAllCategory();
+		service.insertElement(fakeCategory);
+		List<Category> categoriesList = service.getAll();
 		Assert.assertTrue(categoriesList != null && categoriesList.contains(fakeCategory));
-		service.removeCategory(fakeCategory);
-		categoriesList = service.getAllCategory();
+		service.removeElement(fakeCategory);
+		categoriesList = service.getAll();
 		Assert.assertTrue(categoriesList != null && !categoriesList.contains(fakeCategory));
 	}
 	

@@ -1,8 +1,6 @@
-package allitebooks.ebook.parse;
+package allitebooks.ebook.spring.service;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,93 +13,25 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import com.google.common.io.Files;
-
 import allitebooks.ebook.ConfigProperties;
-import allitebooks.ebook.spring.service.EbookService;
 import allitebooks.ebooks.spring.model.Author;
 import allitebooks.ebooks.spring.model.Category;
 import allitebooks.ebooks.spring.model.EbookDetail;
 
-@Service
-public class Parser {
+@Service(value="parserService")
+public class ParserServiceImpl implements ParserService{
 
 	private ConfigProperties configProperties;
-	    
+    
 	private EbookService ebookService; 
 	
-	public Parser(EbookService ebookService, ConfigProperties configProperties){
+	public ParserServiceImpl(EbookService ebookService, ConfigProperties configProperties){
 		this.ebookService = ebookService;
 		this.configProperties = configProperties;
 	}
 	
-	
-	
-	/*
-	public static void main(String[] args) {
-		
-		Parser parser = new Parser();
-		
-		Integer nbPage = parser.getTotalPage();
-		
-		int pageStart = 1;
-		
-	//	parser.loadPage(1);
-		//page 81
-		int pageEnd = nbPage;
-		
-		for (int i=pageStart+620; i < pageEnd; i++){
-			System.out.println("page " + i);
-			parser.loadPage(i);
-		}
-		
-		System.out.println(nbPage);
-		
-		try {
-			parser.savePdf();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-*/
-	private  void savePdf() throws IOException {
-		
-		List<EbookDetail> ebookList = ebookService.getAllEbookDetail();
-		
-		for (EbookDetail ebookDetail:ebookList){
-
-			File ebookFile = new File(ebookService.getFileLocation()+ebookDetail.getTitle().replace("/", "-").replace("?", "").replace(":", "")+".pdf");
-			
-			if (!ebookFile.exists() && ebookDetail.getTitle() != null ){
-				//	&& ebookDetail.getDownload() != null){
-				
-				LocalDateTime localDateTimeStart = LocalDateTime.now();
-				
-				byte[] streamFile = ebookService.loadPdfFile(ebookDetail.getUrlDownload());
-				Files.write(  streamFile,ebookFile);
-				
-			//	ebook.setDownloaded(true);
-			//	repository.save(ebook);
-				
-				LocalDateTime localDateTimeEnd = LocalDateTime.now();
-				
-
-			/*	Duration  duration  = Duration .between(localDateTimeStart, localDateTimeEnd);
-
-				long siz = streamFile.length;
-				long durSec = duration.getSeconds();
-				if (siz > 0){
-					System.out.println("we saved " + ebookFile.toString() + " size: " + siz + "bytes in " + duration.getSeconds() + "seconds @ " +  siz/durSec/1024 + "kb/s");
-				}	
-				*/
-			}
-			
-		}
-		
-	}
-
-	protected List<EbookDetail> loadPage(int page){
+	@Override
+	public List<EbookDetail> loadPage(int page){
 		
 		String urlPage = configProperties.getUrlPage();
 		
@@ -229,15 +159,8 @@ public class Parser {
 		return ebookDetailsList;
 	}
 	
-	private void save(EbookDetail ebookDetail) {
-		ebookService.insertEbookDetail(ebookDetail);
-	}
-	
-	protected boolean isTitleSaved(String title){
-		return ebookService.isEbookTitleExists(title);
-	}
-
-	protected Integer getTotalPage(){
+	@Override
+	public Integer getTotalPage(){
 
 		Integer nbPage = 0;
 		try {
@@ -256,6 +179,11 @@ public class Parser {
 		}
 
 		return nbPage;
+	}
+	
+	@Override
+	public Boolean isTitleSaved(String title){
+		return ebookService.isEbookTitleExists(title);
 	}
 	
 }

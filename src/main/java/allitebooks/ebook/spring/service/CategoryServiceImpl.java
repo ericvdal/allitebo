@@ -1,15 +1,18 @@
 package allitebooks.ebook.spring.service;
 
-import java.util.List;
-
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
 import allitebooks.ebook.spring.dao.CategoryRepository;
 import allitebooks.ebooks.spring.model.Category;
 
 @Service(value="categoryService")
-public class CategoryServiceImpl implements CategoryService {
+public class CategoryServiceImpl extends CommonServiceImpl<Category> implements CategoryService {
 
+	private static final Logger logger = LogManager.getLogger(CategoryServiceImpl.class);
+	
 	private CategoryRepository repository;
 	
 	public CategoryServiceImpl(CategoryRepository repository) {
@@ -17,20 +20,13 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 	
 	@Override
-	public List<Category> getAllCategory() {
-		return repository.findAll();
+	MongoRepository<Category, String> getRepository() {
+		return repository;
 	}
-
-	@Override
-	public void insertCategory(Category category) {
-		repository.insert(category);
-	}
-
-	@Override
-	public void removeCategory(Category category) {
-		repository.delete(category);
-	}
-
 	
+
+
+
+
 
 }

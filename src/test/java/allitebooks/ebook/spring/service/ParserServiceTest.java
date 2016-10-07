@@ -1,8 +1,7 @@
-package allitebooks.ebook.parse;
+package allitebooks.ebook.spring.service;
 
 import java.util.List;
 
-import org.jsoup.select.Elements;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,14 +11,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import allitebooks.ebooks.spring.model.EbookDetail;
 
-
 @ContextConfiguration(locations={"classpath:app-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ParserTest {
+public class ParserServiceTest {
 
 	@Autowired
-	Parser parser;
-	
+	ParserService parser;
 	
 	@Test
 	public void testEquals(){

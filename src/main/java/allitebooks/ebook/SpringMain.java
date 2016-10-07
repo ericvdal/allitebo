@@ -15,7 +15,7 @@ public class SpringMain {
 		
 		EbookService ebookService = context.getBean("ebookService", EbookService.class); 
 		
-		List<EbookDetail> ebookDetailList = ebookService.getAllEbookDetail();
+		List<EbookDetail> ebookDetailList = ebookService.getAll();
 		
 		context.getBeanDefinitionCount();
 	}

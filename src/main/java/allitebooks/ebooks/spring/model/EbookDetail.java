@@ -39,6 +39,8 @@ public class EbookDetail {
 	 private List<Author> authors;
 	 
 	 private List<Category> categories;
+
+	private Boolean downloaded;
 	 
 	 
 	 
@@ -294,6 +296,13 @@ public class EbookDetail {
 	}
 
 
+	public void setDownloaded(Boolean downloaded) {
+		this.downloaded = downloaded;
+	}
 
+	public Boolean getDownloaded() { 
+		return downloaded;
+	}
+	
 	 
 }
