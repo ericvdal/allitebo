@@ -43,6 +43,7 @@ dependencies {
   	compile group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '2.7'
   	compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.7'
   	
+  	compile group: 'commons-io', name: 'commons-io', version: '2.5'
 
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.9.2'
 	
