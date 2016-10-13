@@ -7,9 +7,12 @@ public interface CommonService<T> {
 	public void cleanDatabase();
 
 	List<T> getAll();
+
+	public boolean containsElement(String id);
 	
-	public void insertElement(T elements);
+	public void insertElement(T element);
 	
-	public void removeElement(T elements);
+	public void removeElement(T element);
+	
 	
 }

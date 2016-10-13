@@ -10,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import allitebooks.ebooks.spring.model.Category;
-import allitebooks.ebooks.spring.model.EbookDetail;
 
 @ContextConfiguration(locations={"classpath:app-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
