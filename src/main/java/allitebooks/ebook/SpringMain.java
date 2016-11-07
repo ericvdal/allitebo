@@ -21,7 +21,6 @@ public class SpringMain {
 		
 		Job loadAllItEbookJob  = context.getBean("loadAllItEbookJob", Job.class); 
 		
-		
 		//List<EbookDetail> ebookDetailList = ebookService.getAll();
 		
 		JobRepository jobRepository  = context.getBean("jobRepository", JobRepository.class) ; 

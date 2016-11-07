@@ -5,6 +5,9 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +21,8 @@ import allitebooks.ebooks.spring.model.EbookDetail;
 
 @Configuration
 @EnableBatchProcessing
-//@Import({DatabaseAccessConfiguration.class, ServicesConfiguration.class})
 public class EbookConfiguration {
+	
 	
 	@Autowired
 	private JobBuilderFactory jobs;
@@ -35,13 +38,22 @@ public class EbookConfiguration {
 
 	@Autowired
 	private ParseProcessor parseProcessor;
+	
+	@Autowired
+	private Tasklet taskletCheck;
 
-		
+	@Autowired
+	private JobRepository jobRepository;
+
 	@Bean
 	public Job loadAllItEbookJob(){
+
 		return jobs.get("loadAllItEbookJob")
-					.start(parseStep())	
-					.build();
+				.incrementer(new RunIdIncrementer())
+				.flow(checkIsNext())
+				.next(parseStep())
+				.end()
+				.build();
 	}
 
 	@Bean
@@ -51,6 +63,15 @@ public class EbookConfiguration {
 				.reader(parseReader)
 				.processor(parseProcessor)
 				.writer(parseWriter)
+				.allowStartIfComplete(true)
+				.build();
+	}
+	
+	@Bean
+	Step checkIsNext() {
+		return stepBuilderFactory.get("check_next")
+				.tasklet(taskletCheck)
+				.allowStartIfComplete(true)
 				.build();
 	}
 	

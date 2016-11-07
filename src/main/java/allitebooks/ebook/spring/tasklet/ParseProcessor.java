@@ -1,16 +1,11 @@
 package allitebooks.ebook.spring.tasklet;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -47,6 +42,7 @@ public class ParseProcessor implements ItemProcessor< EbookDetail,  EbookDetail>
 	
 	@Override
 	public EbookDetail process(EbookDetail item) throws Exception {
+		logger.debug("process " + item.getTitle());
 		try {
 			savePdf(item);
 			return item;

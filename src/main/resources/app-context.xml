@@ -12,7 +12,6 @@
 
  <tx:annotation-driven transaction-manager="transactionManager" />
 
-	
  <context:annotation-config/>
  <!-- 
  <context:property-placeholder location="classpath:ebook.properties" />
@@ -21,16 +20,11 @@
     <property name="resources" value="classpath:ebook.yml"/>
 </bean>
 
-
 <context:property-placeholder properties-ref="yamlProperties"/>
 
  <!-- Tell Spring where to scan for components -->
  <context:component-scan base-package="allitebooks.ebook" />
- <!-- 
- <context:component-scan base-package="allitebooks.ebook.spring.dao" />
- <context:component-scan base-package="allitebooks.ebook.spring.service" />
- <context:component-scan base-package="allitebooks.ebook.spring" />
- -->
+
  <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/> 
  
  <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"  />
@@ -39,18 +33,15 @@
     class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
     <property name="messageConverters">
         <list>
-            <bean
-                class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper" ref="jacksonObjectMapper" />
             </bean>
         </list>
     </property>
 </bean>
-	
- 
+	 
  <mongo:mongo host="localhost" port="27017"/>
- 
- 
+  
  <mongo:db-factory dbname="allitebook" mongo-ref="mongo"/>
  <context:annotation-config/>
  
@@ -59,10 +50,5 @@
 	</bean> 
  
 	<mongo:repositories base-package="allitebooks.ebook.spring.dao" mongo-template-ref="mongoTemplate"  />
- 
- 
-
-  								
-
  
 </beans>

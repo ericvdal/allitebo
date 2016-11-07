@@ -11,6 +11,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import allitebooks.ebook.ConfigProperties;
@@ -20,6 +22,8 @@ import allitebooks.ebooks.spring.model.EbookDetail;
 
 @Service(value="parserService")
 public class ParserServiceImpl implements ParserService{
+	
+	Logger logger = LoggerFactory.getLogger(ParserServiceImpl.class);
 
 	private ConfigProperties configProperties;
     
@@ -33,6 +37,8 @@ public class ParserServiceImpl implements ParserService{
 	
 	@Override
 	public List<EbookDetail> loadPage(int page){
+		
+		logger.debug("loadPage page " + page );
 		
 		String urlPage = configProperties.getUrlPage();
 		
