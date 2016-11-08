@@ -6,7 +6,7 @@ targetCompatibility = '1.8'
 
 repositories {    
     maven {url nexusBox+"/nexus/content/groups/public"}
-    
+    mavenCentral()
     maven { url "https://jitpack.io" }
 }
 
@@ -28,21 +28,24 @@ dependencies {
 	
 	compile("org.springframework.boot:spring-boot-starter-batch:" +springBoot)
 	compile ("org.springframework.boot:spring-boot:" +springBoot)
-	compile ("org.springframework.boot:spring-boot-starter:" +springBoot)
+//	compile ("org.springframework.boot:spring-boot-starter:" +springBoot)
 	
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf:" +springBoot)
   //  compile("org.springframework.boot:spring-boot-devtools:" +springBoot)
+  
+      compile ('org.springframework.boot:spring-boot-starter') 
+    compile ('org.springframework.boot:spring-boot-starter-web') 
 	
 	
 //	compile("org.xerial:sqlite-jdbc:3.8.11.2")
 // //	compile("net.kemitix:sqlite-dialect:0.1.0")
 //	compile 'com.github.gwenn:sqlite-dialect:master'
 	
-  	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.7'
-  	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
-  	compile group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '2.7'
-  	compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.7'
-  	
+  //	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.7'
+  //	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
+  //	compile group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '2.7'
+  //	compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.7'
+  //	
   	compile group: 'commons-io', name: 'commons-io', version: '2.5'
 
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.9.2'
