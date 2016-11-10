@@ -44,7 +44,7 @@ public class EbookConfiguration {
 
 	@Autowired
 	private JobRepository jobRepository;
-
+/*
 	@Bean
 	public Job loadAllItEbookJob(){
 
@@ -55,7 +55,23 @@ public class EbookConfiguration {
 				.end()
 				.build();
 	}
+*/
+	
 
+	@Bean
+	public Job loadAllItEbookJob(){
+
+		return jobs.get("loadAllItEbookJob")
+				.incrementer(new RunIdIncrementer())
+				.start(checkIsNext()).on("FINISHED").end()
+				.next(parseStep())
+				.on("COMPLETED")
+				.to(checkIsNext())
+				.on("FINISHED").end().build()
+				.build();
+	}
+	
+	
 	@Bean
 	Step parseStep() {
 		return stepBuilderFactory.get("parse")

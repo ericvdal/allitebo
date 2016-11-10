@@ -33,15 +33,16 @@ public class TaskletCheck implements Tasklet{
 		Integer currentPage = (Integer) chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("currentPage");
 		
 		if (currentPage == null)
-			currentPage  = 0;
-	//		currentPage  = 574;
+		//	currentPage  = 0;
+			currentPage  = 654;
 		else 
 			currentPage ++;
 		if (totalPage >= currentPage) {
 			contribution.setExitStatus(ExitStatus.COMPLETED);
 		} else {
-			contribution.setExitStatus(ExitStatus.STOPPED);
+			contribution.setExitStatus(new ExitStatus("FINISHED"));
 		}
+		System.out.println("ExistStatus " + contribution.getExitStatus().getExitCode());
 		logger.debug("currentPage: {}", currentPage);
 		chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().putInt("currentPage", currentPage);
 	//	chunkContext.setAttribute("currentPage", currentPage);

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import allitebooks.ebook.ConfigProperties;
-import allitebooks.ebook.spring.service.EbookServiceImpl;
 import allitebooks.ebook.spring.service.ParserService;
 import allitebooks.ebooks.spring.model.EbookDetail;
 
@@ -44,33 +43,41 @@ public class ParseReader implements ItemReader<EbookDetail>{
 	public EbookDetail read()
 			throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
 		System.out.println("read");
+		
+		int totalPage = parseService.getTotalPage();
+		Integer page = (Integer) stepExecution.getJobExecution().getExecutionContext().get("currentPage");
+		
 		EbookDetail retour = null;
 		
-		if (ebookDetailListIsNotInitilized()) {
-			load();
+		if (totalPage < page)
+		{
+			if (ebookDetailListIsNotInitilized()) {
+				load(page);
+			}
+			
+			if (ebookDetailList.size() > 0){
+				EbookDetail ebookDetail = ebookDetailList.remove(0);
+				logger.debug( " return: " + ebookDetail.getTitle());
+				retour =  ebookDetail;
+			}
+				
+			else {
+				logger.debug( " return null ");
+
+				System.out.println("return null " );
+			}
 		}
 		
-		if (ebookDetailList.size() > 0){
-			EbookDetail ebookDetail = ebookDetailList.remove(0);
-			logger.debug( " return: " + ebookDetail.getTitle());
-			retour =  ebookDetail;
-		}
-			
-		else {
-			logger.debug( " return null ");
 
-			System.out.println("return null " );
-		}
+		stepExecution.getJobExecution().getExecutionContext().putInt("currentPage", page);
 
 		
 		return retour;
 
 	}
 	
-	private void load(){
-
-
-		Integer page = (Integer) stepExecution.getJobExecution().getExecutionContext().get("currentPage");
+	private void load(Integer page){
+		
 		System.out.println("load " + page);
 		while(ebookDetailListIsNotInitilized()) {
 			ebookDetailList = parseService.loadPage(page);
@@ -81,7 +88,6 @@ public class ParseReader implements ItemReader<EbookDetail>{
 		page++;
 		System.out.println("loaded " + page);
 
-		stepExecution.getJobExecution().getExecutionContext().putInt("currentPage", page);
 		
 	}
 
