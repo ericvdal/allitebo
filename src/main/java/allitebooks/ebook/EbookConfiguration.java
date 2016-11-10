@@ -59,7 +59,7 @@ public class EbookConfiguration {
 	@Bean
 	Step parseStep() {
 		return stepBuilderFactory.get("parse")
-				.<EbookDetail, EbookDetail> chunk(10)
+				.<EbookDetail, EbookDetail> chunk(1)
 				.reader(parseReader)
 				.processor(parseProcessor)
 				.writer(parseWriter)

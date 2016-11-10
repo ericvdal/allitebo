@@ -43,7 +43,7 @@ public class ParseReader implements ItemReader<EbookDetail>{
 	@Override
 	public EbookDetail read()
 			throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-		
+		System.out.println("read");
 		EbookDetail retour = null;
 		
 		if (ebookDetailListIsNotInitilized()) {
@@ -58,6 +58,8 @@ public class ParseReader implements ItemReader<EbookDetail>{
 			
 		else {
 			logger.debug( " return null ");
+
+			System.out.println("return null " );
 		}
 
 		
@@ -66,14 +68,18 @@ public class ParseReader implements ItemReader<EbookDetail>{
 	}
 	
 	private void load(){
+
+
 		Integer page = (Integer) stepExecution.getJobExecution().getExecutionContext().get("currentPage");
+		System.out.println("load " + page);
 		while(ebookDetailListIsNotInitilized()) {
 			ebookDetailList = parseService.loadPage(page);
 			if (ebookDetailListIsNotInitilized() && page < parseService.getTotalPage()) {
 				page ++;
 			}
 		}
-		
+		page++;
+		System.out.println("loaded " + page);
 
 		stepExecution.getJobExecution().getExecutionContext().putInt("currentPage", page);
 		

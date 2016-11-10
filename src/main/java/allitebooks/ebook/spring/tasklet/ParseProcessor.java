@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.activation.MimetypesFileTypeMap;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.common.io.Files;
@@ -52,40 +55,64 @@ public class ParseProcessor implements ItemProcessor< EbookDetail,  EbookDetail>
 		return null;
 	}
 	
-	private byte[] loadPdfFile(String url) {
+	private byte[] loadPdfFile(String url, String extension) {
 		logger.debug("loadPdfFile");
 		HttpHeaders newHeader = new HttpHeaders();
-		newHeader.add(HttpHeaders.REFERER, "http://it-ebooks.info");
+	//	newHeader.add(HttpHeaders.REFERER, "http://it-ebooks.info");
 		HttpEntity requestEntity = new HttpEntity(newHeader);
 		
 		ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
 
+		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+		String mimeType = mimeTypesMap.getContentType(url);
+		
+		
 		List<MediaType> supportedApplicationTypes = new ArrayList<MediaType>();
-		MediaType pdfApplication = new MediaType("application","pdf");
-		supportedApplicationTypes.add(pdfApplication);
+		if (extension.equalsIgnoreCase("pdf")){
+
+			supportedApplicationTypes.add(MediaType.APPLICATION_PDF);
+		} else if (extension.equalsIgnoreCase("rar")) {
+			supportedApplicationTypes.add(MediaType.parseMediaType("application/x-rar-compressed "));
+
+			supportedApplicationTypes.add(new MediaType("application","pdf"));
+		}
+		
 
 		byteArrayHttpMessageConverter.setSupportedMediaTypes(supportedApplicationTypes);
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
 		messageConverters.add(byteArrayHttpMessageConverter);
 		restTemplate.setMessageConverters(messageConverters);
-		
-		ResponseEntity<byte[]> streamFile = restTemplate.exchange(url, HttpMethod.GET, requestEntity, byte[].class);
+		try {
+			ResponseEntity<byte[]> streamFile = restTemplate.exchange(url, HttpMethod.GET, requestEntity, byte[].class);
 
-		return streamFile.getBody();
+			return streamFile.getBody();
+		} catch (HttpClientErrorException e) {
+			System.out.println(e);
+			return null;
+		}
 	}
 
 	private  void savePdf(EbookDetail ebookDetail) throws IOException {
 		logger.debug("savePdf");
 	
-			File ebookFile = new File(config.getLocation()+ebookDetail.getTitle().replace("/", "-").replace("?", "").replace(":", "")+".pdf");
+		String extension = "pdf";
+		
+		if (ebookDetail.getUrlDownload().endsWith("rar")) {
+			extension = "rar";
+		} else if (ebookDetail.getUrlDownload().endsWith("zip")) {
+			extension = "zip";
+		}
+		
+			File ebookFile = new File(config.getLocation()+ebookDetail.getTitle().replace("/", "-").replace("?", "").replace(":", "")+"." + extension);
 			
 			if (!ebookFile.exists() && ebookDetail.getTitle() != null ){
 				
 				LocalDateTime localDateTimeStart = LocalDateTime.now();
 				
-				byte[] streamFile = loadPdfFile(ebookDetail.getUrlDownload());
-				Files.write(streamFile,ebookFile);
-				
+				byte[] streamFile = loadPdfFile(ebookDetail.getUrlDownload(), extension);
+				if (streamFile != null) {
+					Files.write(streamFile,ebookFile);
+				}
 				LocalDateTime localDateTimeEnd = LocalDateTime.now();
 				
 			}

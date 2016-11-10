@@ -34,6 +34,7 @@ public class TaskletCheck implements Tasklet{
 		
 		if (currentPage == null)
 			currentPage  = 0;
+	//		currentPage  = 574;
 		else 
 			currentPage ++;
 		if (totalPage >= currentPage) {

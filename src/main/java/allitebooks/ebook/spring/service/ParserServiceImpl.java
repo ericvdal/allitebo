@@ -37,8 +37,13 @@ public class ParserServiceImpl implements ParserService{
 	
 	@Override
 	public List<EbookDetail> loadPage(int page){
-		
+		System.out.println("loadPage page " + page);
 		logger.debug("loadPage page " + page );
+		
+		if(page  == 16) {
+
+			System.out.println("loadPage page " + page);
+		}
 		
 		String urlPage = configProperties.getUrlPage();
 		
@@ -65,6 +70,8 @@ public class ParserServiceImpl implements ParserService{
 				
 				
 				if (!isTitleSaved(title)){
+					try {
+					System.out.println("load data for " + title);
 					String detailUrl = entryBoyElement.getElementsByClass("entry-title").first().children().first().attr("href");
 					
 					String resume = entryBoyElement.getElementsByClass("entry-summary").first().text();
@@ -156,11 +163,14 @@ public class ParserServiceImpl implements ParserService{
 					System.out.println(ebookDetail);
 					
 					ebookDetailsList.add(ebookDetail);
-					
+
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 		return ebookDetailsList;
 	}
