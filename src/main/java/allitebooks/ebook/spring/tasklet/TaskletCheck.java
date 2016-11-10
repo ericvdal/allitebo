@@ -33,8 +33,7 @@ public class TaskletCheck implements Tasklet{
 		Integer currentPage = (Integer) chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("currentPage");
 		
 		if (currentPage == null)
-		//	currentPage  = 0;
-			currentPage  = 654;
+			currentPage  = 0;
 		else 
 			currentPage ++;
 		if (totalPage >= currentPage) {
