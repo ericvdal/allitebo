@@ -49,7 +49,7 @@ public class ParseReader implements ItemReader<EbookDetail>{
 		
 		EbookDetail retour = null;
 		
-		if (totalPage < page)
+		if (totalPage > page)
 		{
 			if (ebookDetailListIsNotInitilized()) {
 				load(page);
